@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Notte Criminale</title>
+
+<!-- css -->
+<link href="css/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="css/style.css" />
+
+<!-- js -->
+<script src="js/jquery-1.6.4.min.js" type="text/javascript"></script>
+<s-cript src="js/jquery.mobile-1.0.min.js" type="text/javascript"></script>
+<script src="js/md5.js"></script>
+
+<!-- menu -->
+<script src="js/jquery.animate-enhanced.js"></script>
+<link rel="stylesheet" href="js/slidingview.css" type="text/css" />
+<script type="text/javascript" src="js/slidingview.js"></script>
+<script>
+	$(document).ready( function() {
+				new SlidingView( 'sidebar', 'body' );
+			} );
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	
+	
+	// load item in BOXNOTIZIE
+	$.ajax({
+		url: 'http://www.cronacaroma.info/services/last.php',
+		contentType: 'application/json;',
+		dataType: 'jsonp',
+		timeout: 5000,
+		success : function (data,stato) {
+			$.each(data, function(i,item){		
+					var passhash = CryptoJS.MD5('Image'+item.id).toString();					
+$('#boxnotizie').append('<li><a href="details.html?id='+ item.id+'"><img alt="" src="http://www.cronacaroma.info/media/k2/items/cache/'+ passhash +'_S.jpg" /> <span class="categoria"> '+ item.name+'</span> <h4> ' + item.title + ' </h4> <div style="clear:both"></div></a></li>');					
+			});			
+			},
+				 error : function (richiesta,stato,errori) {
+				 alert("E' evvenuto un errore. Il stato della chiamata: "+  stato);
+			}
+		})
+		
+	
+		
+		
+		// load category in CATEGORYLIST 
+		$.ajax({
+		url: 'http://www.cronacaroma.info/services/category.php',
+		contentType: 'application/json;',
+		dataType: 'jsonp',
+		timeout: 5000,
+		success : function (data,stato) {
+			$.each(data, function(i,item){$('#categorylist').append('<li><a href="category.html?id='+ item.id+'">' + item.name + ' </a></li>'); });		
+			},
+			 error : function (richiesta,stato,errori) { alert("E' evvenuto un errore. Il stato della chiamata: "+  stato);  }
+		})	
+		
+		//$('#loader').delay(1000).fadeIn(1000);
+		//$('#logo').delay(4000).fadeIn(1000);
+		
+		//$('#splashscreen').delay(2000).fadeOut(4500)
+		//$('.slidingview_wrapper').delay(4000).fadeIn(7000);
+		
+		// splash screen
+		$('#divloader').delay(1000).fadeIn(2000).delay().fadeOut(1000);
+		$('#divlogo').delay(4000).fadeIn(1000);
+		$('#splashscren').delay(8000).fadeOut(500)
+
+
+		
+
+		
+			
+		 
+});
+</script>
+</head>
+
+
+<body>
+
+<div id="splashscren">
+ <div id="divlogo"><img id="logo" alt="" src="images/logo.png" /> </div>
+    <div id="divloader"> <img id="loader" alt="" src="images/loader.gif" /></div>
+</div>
+
+<div class="slidingview_wrapper">
+  <div id="sidebar">
+    <h2> Notte criminale </h2>
+    <ul id="categorylist">
+      
+    </ul>
+  </div>
+  <div id="body"> 
+    
+  <div id="paginahome" data-role="page" data-add-back-btn="false">
+
+	<div data-role="header"> <h1>Notte Criminale</h1> </div> <!-- end header -->
+
+	<div  id="contenuti" data-role="content">
+			 <ul id="boxnotizie" data-role="listview"></ul>
+	</div>	<!-- end content -->
+
+</div> <!-- end pagina dettaglio -->
+    
+  </div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Notte Criminale</title>
+
+<!-- css -->
+<link href="css/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="css/style.css" />
+
+<!-- js -->
+<script src="js/jquery-1.6.4.min.js" type="text/javascript"></script>
+<s-cript src="js/jquery.mobile-1.0.min.js" type="text/javascript"></script>
+<script src="js/md5.js"></script>
+
+<style type="text/css">
+h1 {color:red; font-weight:bold; text-align:center; border-bottom:3px solid blue;}
+#content {width:400px; height:400px; margin:0 auto; border:1px dashed red; }
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var id = getUrlVars()["id"];
+
+
+
+// load item in BOXNOTIZIE
+	$.ajax({
+		url: 'http://www.cronacaroma.info/services/categoryitem.php?id='+id+' ',
+		contentType: 'application/json;',
+		dataType: 'jsonp',
+		timeout: 5000,
+		success : function (data,stato) {
+			$.each(data, function(i,item){		
+					var passhash = CryptoJS.MD5('Image'+item.id).toString();					
+$('#boxnotizie').append('<li><a href="details.html?id='+ item.id+'"><img alt="" src="http://www.cronacaroma.info/media/k2/items/cache/'+ passhash +'_S.jpg" /> <span class="categoria"> Categoria</span> <h4> ' + item.title + ' </h4> <div style="clear:both"></div></a></li>');					
+			});			
+			},
+				 error : function (richiesta,stato,errori) {
+				
+				 alert("E' evvenuto un errore. Il stato della chiamata: "+  stato);
+			}
+		})
+		
+		
+		
+		
+		
+	// function for get variabile 	
+	function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+		
+
+});
+</script>
+</head>
+
+<body>
+<div id="paginahome" data-role="page" data-add-back-btn="false">
+	<div data-role="header"> <h1>Notte Criminale</h1> </div> <!-- end header -->    
+	<div  id="contenuti" data-role="content">
+			 <ul id="boxnotizie" data-role="listview"></ul>
+	</div>
+
+</div> <!-- end pagina dettaglio -->
+
+
+
+</body>
+</html>
